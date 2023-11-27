@@ -7,6 +7,8 @@ Go functions to make working with pointers and ternaries more concise.
 `grab.If` acts as a ternary operator.
 
 ```go
+import "github.com/common-fate/grab"
+
 foo := "bar"
 
 output := grab.If(foo == "bar", "foo is bar", "foo is not bar")
@@ -19,6 +21,8 @@ output := grab.If(foo == "bar", "foo is bar", "foo is not bar")
 `grab.Ptr` returns the pointer to a value.
 
 ```go
+import "github.com/common-fate/grab"
+
 output := grab.Ptr("foo")
 
 // Output is a pointer to a string "foo"
@@ -41,6 +45,8 @@ output := MyStruct{
 `grab.Value` takes a pointer and returns the underlying value. If the pointer is nil, it returns the zero value of the type.
 
 ```go
+import "github.com/common-fate/grab"
+
 var intPointer *int
 intValue := Value(intPointer) // intValue will be 0 if intPointer is nil
 ```
