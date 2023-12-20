@@ -65,3 +65,31 @@ func If[T any](condition bool, ifTrue, ifFalse T) T {
 	}
 	return ifFalse
 }
+
+// FirstNonZero returns the first non-zero element from a given list of elements.
+// It is a generic function that works with any comparable type (denoted by 'T').
+//
+// Parameters:
+//   - elements: A variadic list of elements of type 'T'. The function iterates through these elements
+//     in the order they are provided and returns the first one that is not equal to the zero value of type 'T'.
+//
+// Returns:
+//   - T: The first non-zero element in the 'elements' list. If all elements are zero or the list is empty,
+//     the zero value of type 'T' is returned.
+//
+// Example:
+// result := FirstNonZero[int](0, 3, 0, 4)
+// // result will be 3, as it's the first non-zero element in the list
+//
+// Note: This function is useful for selecting the first significant element from a list of ordered values,
+// where 'significant' means not being the zero value of the specified type. It simplifies the process of
+// checking multiple values in precedence order.
+func FirstNonZero[T comparable](elements ...T) T {
+	var zero T
+	for _, elem := range elements {
+		if elem != zero {
+			return elem
+		}
+	}
+	return zero
+}

@@ -48,9 +48,26 @@ output := MyStruct{
 import "github.com/common-fate/grab"
 
 var intPointer *int
-intValue := Value(intPointer) // intValue will be 0 if intPointer is nil
+intValue := grab.Value(intPointer) // intValue will be 0 if intPointer is nil
 ```
 
 This function is particularly useful for safely dereferencing pointers, especially when there's a possibility of them being nil.
+
+## grab.FirstNonZero
+
+`grab.FirstNonZero` takes a variadic list of comparable elements and returns the first non zero value comparing from start to finish of the supplied elements.
+
+```go
+import (
+    "os"
+    "github.com/common-fate/grab"
+)
+
+var userSuppliedPath string
+
+path := grab.FirstNonZero(userSuppliedPath, os.Getenv("PATH"),"/default/path") // intValue will be the first non empty string
+```
+
+This function is particularly useful for setting configuration by precedence from a range of available sources.
 
 Created by @JoshuaWilkes.

@@ -46,3 +46,32 @@ func TestIf(t *testing.T) {
 		})
 	}
 }
+
+func TestFirstNonZero(t *testing.T) {
+	type args struct {
+		elements []string
+	}
+	testString := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "second element",
+			args: args{[]string{"", "selected", ""}},
+			want: "selected",
+		},
+		{
+			name: "no args returns zero value",
+			args: args{},
+			want: "",
+		},
+	}
+	for _, tt := range testString {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := grab.FirstNonZero(tt.args.elements...); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("FirstNonZero() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
