@@ -65,7 +65,7 @@ import (
 
 var userSuppliedPath string
 
-path := grab.FirstNonZero(userSuppliedPath, os.Getenv("PATH"),"/default/path") // intValue will be the first non empty string
+path := grab.FirstNonZero(userSuppliedPath, os.Getenv("PATH"),"/default/path") // path will be the first non empty string
 ```
 
 This function is particularly useful for setting configuration by precedence from a range of available sources.
