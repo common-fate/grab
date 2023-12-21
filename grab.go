@@ -1,5 +1,7 @@
 package grab
 
+import "context"
+
 // Ptr takes any value of type 'T' and returns a pointer to a new copy of that value.
 // It is a generic function that can handle any type.
 //
@@ -92,4 +94,66 @@ func FirstNonZero[T comparable](elements ...T) T {
 		}
 	}
 	return zero
+}
+
+// IsZero checks if the provided value is the zero value for its type.
+// It is a generic function that works with any comparable type (denoted by 'T').
+//
+// Parameters:
+//   - value: The value of type 'T' to be checked against its zero value.
+//
+// Returns:
+//   - bool: Returns true if 'value' is the zero value for its type; otherwise, returns false.
+//
+// Example:
+// zeroCheck := IsZero[int](0)
+// // zeroCheck will be true, as 0 is the zero value for int
+//
+// Note: This function is useful for determining if a value is uninitialized or set to its default state.
+// It is particularly handy in generic programming where the type 'T' can vary and direct comparison
+// to a known zero value is not possible.
+func IsZero[T comparable](value T) bool {
+	var zero T
+	return value == zero
+}
+
+// AllPages aggregates all items from a paginated API into a single slice.
+// It is a generic function that works with any type 'T' for the items and any comparable type 'Token' for pagination tokens.
+//
+// Parameters:
+//   - ctx: A context.Context used for cancellation and timeout control of the HTTP requests.
+//   - fetchPage: A function that retrieves a single page. It takes the current pagination token (of type 'Token')
+//     and returns a slice of items (of type 'T'), the next pagination token (of type 'Token'), and an error if any occurs.
+//
+// Returns:
+//   - []T: A slice containing all aggregated items from all pages.
+//   - error: An error if any occurs during the fetching of pages. If an error is returned, the slice may contain
+//     the items fetched before the error occurred.
+//
+// Example:
+// items, err := AllPages[MyItem, string](ctx, myFetchPageFunc)
+// // items will contain all MyItem instances from all pages fetched using myFetchPageFunc
+//
+// Note: This function abstracts away the pagination logic, allowing users to easily fetch and aggregate
+// items from APIs that implement pagination. The user must provide a 'fetchPage' function that knows
+// how to retrieve a single page of items and the next pagination token.
+func AllPages[T any, Token comparable](ctx context.Context, fetchPage func(ctx context.Context, nextToken *Token) ([]T, *Token, error)) ([]T, error) {
+	var allItems []T
+	var nextToken *Token
+
+	for {
+		items, newToken, err := fetchPage(ctx, nextToken)
+		if err != nil {
+			return nil, err
+		}
+
+		allItems = append(allItems, items...)
+
+		if newToken == nil || IsZero(*newToken) {
+			break
+		}
+		nextToken = newToken
+	}
+
+	return allItems, nil
 }

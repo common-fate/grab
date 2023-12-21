@@ -70,4 +70,34 @@ path := grab.FirstNonZero(userSuppliedPath, os.Getenv("PATH"),"/default/path") /
 
 This function is particularly useful for setting configuration by precedence from a range of available sources.
 
+## grab.IsZero
+
+grab.IsZero checks if the provided value is the zero value for its type. It works with any comparable type.
+
+```go
+import "github.com/common-fate/grab"
+
+zeroCheck := grab.IsZero[int](0) // zeroCheck will be true, as 0 is the zero value for int
+
+nonZeroCheck := grab.IsZero[string]("hello") // nonZeroCheck will be false, as "hello" is not the zero value for string
+```
+
+This function is useful for determining if a value is uninitialized or set to its default state, particularly in generic programming where the type can vary.
+
+## grab.AllPages
+
+grab.AllPages aggregates all items from a paginated API into a single slice. It works with any type for the items and any comparable type for pagination tokens.
+
+```go
+import (
+    "context"
+    "github.com/common-fate/grab"
+)
+
+ctx := context.Background()
+items, err := grab.AllPages[MyItem, string](ctx, myFetchPageFunc) // items will contain all MyItem instances from all pages fetched using myFetchPageFunc
+```
+
+This function abstracts away the pagination logic, allowing users to easily fetch and aggregate items from APIs that implement pagination. The user must provide a 'fetchPage' function that knows how to retrieve a single page of items and the next pagination token.
+
 Created by @JoshuaWilkes.
