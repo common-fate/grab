@@ -72,7 +72,7 @@ This function is particularly useful for setting configuration by precedence fro
 
 ## grab.IsZero
 
-grab.IsZero checks if the provided value is the zero value for its type. It works with any comparable type.
+`grab.IsZero` checks if the provided value is the zero value for its type. It works with any comparable type.
 
 ```go
 import "github.com/common-fate/grab"
@@ -86,7 +86,7 @@ This function is useful for determining if a value is uninitialized or set to it
 
 ## grab.AllPages
 
-grab.AllPages aggregates all items from a paginated API into a single slice. It works with any type for the items and any comparable type for pagination tokens.
+`grab.AllPages` aggregates all items from a paginated API into a single slice. It works with any type for the items and any comparable type for pagination tokens.
 
 ```go
 import (
@@ -102,7 +102,7 @@ This function abstracts away the pagination logic, allowing users to easily fetc
 
 ## grab.Map
 
-grab.Map applies a transformation function to each item in a slice, returning a slice of the results. It is a generic function that can operate on a slice of any type T and applies a function that transforms each T into another type F.
+`grab.Map` applies a transformation function to each item in a slice, returning a slice of the results. It is a generic function that can operate on a slice of any type T and applies a function that transforms each T into another type F.
 
 ```go
 import (
@@ -119,5 +119,25 @@ transformedItems := grab.Map(items, func(i int) string {
 ```
 
 This function is particularly useful for cases where a slice of items needs to be transformed or mapped into a new slice of a different type, applying a specific operation or transformation to each item. The provided fn function encapsulates the logic of this transformation. It's a versatile tool for processing collections of data in a concise and readable manner.
+
+## grab.Filter
+
+`grab.Filter` filters elements of a slice based on a provided predicate function. It operates on a slice of any type `T` and returns a new slice containing only elements that satisfy the predicate.
+
+```go
+import (
+    "fmt"
+    "github.com/common-fate/grab"
+)
+
+// Example usage of Filter
+numbers := []int{1, 2, 3, 4, 5}
+evenNumbers := grab.Filter(numbers, func(n int) bool {
+    return n%2 == 0
+})
+// evenNumbers will be a []int: [2, 4]
+```
+
+This function is useful when you need to extract elements from a collection based on specific criteria. The predicate function fn determines whether each item in the input slice should be included in the result. It's a practical tool for processing and manipulating slices.
 
 Created by @JoshuaWilkes.

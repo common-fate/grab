@@ -186,3 +186,30 @@ func Map[T any, F any](items []T, fn func(T) F) []F {
 	}
 	return result
 }
+
+// Filter iterates over elements of a slice, returning a new slice of all elements for which the predicate `fn` returns true.
+//
+// Parameters:
+//   - items: A slice of items of type 'T'. These are the items to be filtered.
+//   - fn: A predicate function that takes an item of type 'T' and returns a bool. If 'fn' returns true, the item is included in the result.
+//
+// Returns:
+//   - []T: A slice containing all items that satisfy the predicate 'fn'.
+//
+// Example:
+// numbers := []int{1, 2, 3, 4, 5}
+//
+//	evenNumbers := Filter(numbers, func(n int) bool {
+//	    return n%2 == 0
+//	})
+//
+// // evenNumbers will be a []int: [2, 4]
+func Filter[T any](items []T, fn func(T) bool) []T {
+	var result []T
+	for _, item := range items {
+		if fn(item) {
+			result = append(result, item)
+		}
+	}
+	return result
+}

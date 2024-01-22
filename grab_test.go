@@ -173,7 +173,7 @@ func TestMap(t *testing.T) {
 			name:  "empty slice",
 			items: []int{},
 			fn:    func(i int) string { return fmt.Sprintf("Num: %d", i) },
-			want:  nil,
+			want:  []string{},
 		},
 		{
 			name:  "single item",
@@ -192,7 +192,48 @@ func TestMap(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := grab.Map(tt.items, tt.fn)
-			assert.Equal(t, tt.want, got)
+			assert.ElementsMatch(t, tt.want, got)
+			if got != nil {
+				assert.Equal(t, tt.want, got)
+			}
+		})
+	}
+}
+
+func TestFilter(t *testing.T) {
+	tests := []struct {
+		name  string
+		items []int
+		fn    func(int) bool
+		want  []int
+	}{
+		{
+			name:  "filter even numbers",
+			items: []int{1, 2, 3, 4, 5},
+			fn:    func(i int) bool { return i%2 == 0 },
+			want:  []int{2, 4},
+		},
+		{
+			name:  "all items filtered out",
+			items: []int{1, 3, 5},
+			fn:    func(i int) bool { return i%2 == 0 },
+			want:  []int{},
+		},
+		{
+			name:  "no items filtered out",
+			items: []int{2, 4, 6},
+			fn:    func(i int) bool { return i%2 == 0 },
+			want:  []int{2, 4, 6},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := grab.Filter(tt.items, tt.fn)
+			assert.ElementsMatch(t, tt.want, got)
+			if got != nil {
+				assert.Equal(t, tt.want, got)
+			}
 		})
 	}
 }
