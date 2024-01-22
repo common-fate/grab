@@ -161,3 +161,38 @@ func TestIsZero(t *testing.T) {
 		})
 	}
 }
+
+func TestMap(t *testing.T) {
+	tests := []struct {
+		name  string
+		items []int
+		fn    func(int) string
+		want  []string
+	}{
+		{
+			name:  "empty slice",
+			items: []int{},
+			fn:    func(i int) string { return fmt.Sprintf("Num: %d", i) },
+			want:  nil,
+		},
+		{
+			name:  "single item",
+			items: []int{1},
+			fn:    func(i int) string { return fmt.Sprintf("Num: %d", i) },
+			want:  []string{"Num: 1"},
+		},
+		{
+			name:  "multiple items",
+			items: []int{1, 2, 3},
+			fn:    func(i int) string { return fmt.Sprintf("Num: %d", i) },
+			want:  []string{"Num: 1", "Num: 2", "Num: 3"},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := grab.Map(tt.items, tt.fn)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}

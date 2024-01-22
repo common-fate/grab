@@ -157,3 +157,32 @@ func AllPages[T any, Token comparable](ctx context.Context, fetchPage func(ctx c
 
 	return allItems, nil
 }
+
+// Map applies a transformation function to each item in a slice and returns a slice of the results.
+// It is a generic function that operates on a slice of any type 'T' and applies a function that transforms each 'T' into another type 'F'.
+//
+// Parameters:
+//   - items: A slice of items of type 'T'. These are the items to be transformed.
+//   - fn: A function that takes an item of type 'T' and returns a new item of type 'F'. This function defines the transformation to be applied to each item.
+//
+// Returns:
+//   - []F: A slice containing all the transformed items. The order of the items in this slice corresponds to the order of the items in the input slice.
+//
+// Example:
+// originalItems := []int{1, 2, 3}
+//
+//	transformedItems := Map[int, string](originalItems, func(i int) string {
+//	    return fmt.Sprintf("Number: %d", i)
+//	})
+//
+// // transformedItems will be a []string with values: ["Number: 1", "Number: 2", "Number: 3"]
+//
+// Note: This function is useful for cases where a slice of items needs to be transformed or mapped into a new slice of a different type,
+// applying a specific operation or transformation to each item. The provided 'fn' function encapsulates the logic of this transformation.
+func Map[T any, F any](items []T, fn func(T) F) []F {
+	var result []F
+	for _, item := range items {
+		result = append(result, fn(item))
+	}
+	return result
+}

@@ -100,4 +100,24 @@ items, err := grab.AllPages[MyItem, string](ctx, myFetchPageFunc) // items will 
 
 This function abstracts away the pagination logic, allowing users to easily fetch and aggregate items from APIs that implement pagination. The user must provide a 'fetchPage' function that knows how to retrieve a single page of items and the next pagination token.
 
+## grab.Map
+
+grab.Map applies a transformation function to each item in a slice, returning a slice of the results. It is a generic function that can operate on a slice of any type T and applies a function that transforms each T into another type F.
+
+```go
+import (
+    "fmt"
+    "github.com/common-fate/grab"
+)
+
+// Example usage of Map
+items := []int{1, 2, 3}
+transformedItems := grab.Map(items, func(i int) string {
+    return fmt.Sprintf("Number: %d", i)
+})
+// transformedItems will be a []string: ["Number: 1", "Number: 2", "Number: 3"]
+```
+
+This function is particularly useful for cases where a slice of items needs to be transformed or mapped into a new slice of a different type, applying a specific operation or transformation to each item. The provided fn function encapsulates the logic of this transformation. It's a versatile tool for processing collections of data in a concise and readable manner.
+
 Created by @JoshuaWilkes.
