@@ -140,4 +140,23 @@ evenNumbers := grab.Filter(numbers, func(n int) bool {
 
 This function is useful when you need to extract elements from a collection based on specific criteria. The predicate function fn determines whether each item in the input slice should be included in the result. It's a practical tool for processing and manipulating slices.
 
+## grab.MapFromSlice
+
+`grab.MapFromSlice` creates a map from the given slice, where the elements of the slice become the keys and a provided value is associated with each key. It operates on a slice of any type T and returns a map with keys of type T and values of any type F.
+
+```go
+Copy code
+import (
+"fmt"
+"github.com/common-fate/grab"
+)
+
+// Example usage of MapFromSlice
+fruits := []string{"apple", "banana", "orange"}
+fruitMap := grab.MapFromSlice(fruits, true)
+// fruitMap will be a map[string]bool: {"apple": true, "banana": true, "orange": true}
+```
+
+This function is particularly useful when you need to quickly create a mapping of elements from a slice, associating each element with a common value. It simplifies the process of generating maps from slices and can be handy in various scenarios where key-value associations are required.
+
 Created by @JoshuaWilkes.

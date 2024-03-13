@@ -237,3 +237,53 @@ func TestFilter(t *testing.T) {
 		})
 	}
 }
+
+func TestMapFromSlice(t *testing.T) {
+	tests := []struct {
+		name  string
+		items []string
+		value bool
+		want  map[string]bool
+	}{
+		{
+			name:  "all items mapped to true",
+			items: []string{"apple", "banana", "orange"},
+			value: true,
+			want:  map[string]bool{"apple": true, "banana": true, "orange": true},
+		},
+		{
+			name:  "all items mapped to false",
+			items: []string{"apple", "banana", "orange"},
+			value: false,
+			want:  map[string]bool{"apple": false, "banana": false, "orange": false},
+		},
+		{
+			name:  "empty slice",
+			items: []string{},
+			value: true,
+			want:  map[string]bool{},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := grab.MapFromSlice(tt.items, tt.value)
+
+			// Check if the length of the map matches the expected length
+			assert.Equal(t, len(tt.want), len(got), "Length of maps mismatch")
+
+			// Check if each key-value pair in 'want' exists in 'got'
+			for key, wantValue := range tt.want {
+				gotValue, exists := got[key]
+				assert.True(t, exists, fmt.Sprintf("Key %s does not exist in the result map", key))
+				assert.Equal(t, wantValue, gotValue, fmt.Sprintf("Value for key %s mismatch", key))
+			}
+
+			// Check if each key in 'got' exists in 'want'
+			for key := range got {
+				_, exists := tt.want[key]
+				assert.True(t, exists, fmt.Sprintf("Key %s should not exist in the result map", key))
+			}
+		})
+	}
+}

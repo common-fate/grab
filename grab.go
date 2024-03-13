@@ -213,3 +213,27 @@ func Filter[T any](items []T, fn func(T) bool) []T {
 	}
 	return result
 }
+
+// MapFromSlice creates a map from the given slice where the elements of the slice are the keys and the value is a generic type.
+// The value for each key is set to the provided 'value'.
+//
+// Parameters:
+//   - items: A slice of items of type 'T'. These are the keys for the map.
+//   - value: The value to be associated with each key in the map.
+//
+// Returns:
+//   - map[T]F: A map where the keys are elements from the input slice and the value for each key is set to the provided 'value'.
+//
+// Example:
+// originalSlice := []string{"apple", "banana", "orange"}
+//
+// newMap := MapFromSlice(originalSlice, true)
+//
+// // newMap will be a map[string]bool with keys {"apple": true, "banana": true, "orange": true}
+func MapFromSlice[T comparable, F any](items []T, value F) map[T]F {
+	result := make(map[T]F, len(items))
+	for _, item := range items {
+		result[item] = value
+	}
+	return result
+}
