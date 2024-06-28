@@ -120,6 +120,26 @@ transformedItems := grab.Map(items, func(i int) string {
 
 This function is particularly useful for cases where a slice of items needs to be transformed or mapped into a new slice of a different type, applying a specific operation or transformation to each item. The provided fn function encapsulates the logic of this transformation. It's a versatile tool for processing collections of data in a concise and readable manner.
 
+## grab.FlatMap
+
+`grab.FlatMap` applies a transformation function to each item in a slice and flattens the results into a single slice. It is a generic function that can operate on a slice of any type T and applies a function that transforms each T into a slice of another type F.
+
+```go
+import (
+"fmt"
+"github.com/common-fate/grab"
+)
+
+// Example usage of FlatMap
+items := []int{1, 2, 3}
+transformedItems := grab.FlatMap(items, func(i int) []string {
+return []string{fmt.Sprintf("Number: %d", i), fmt.Sprintf("Square: %d", i\*i)}
+})
+// transformedItems will be a []string: ["Number: 1", "Square: 1", "Number: 2", "Square: 4", "Number: 3", "Square: 9"]
+```
+
+This function is particularly useful for cases where a slice of items needs to be transformed or mapped into multiple items, and the resulting slices need to be concatenated into a single slice. The provided fn function encapsulates the logic of this transformation. It's a versatile tool for processing collections of data, especially when each item transformation results in multiple items, in a concise and readable manner.
+
 ## grab.Filter
 
 `grab.Filter` filters elements of a slice based on a provided predicate function. It operates on a slice of any type `T` and returns a new slice containing only elements that satisfy the predicate.

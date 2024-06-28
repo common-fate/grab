@@ -199,7 +199,43 @@ func TestMap(t *testing.T) {
 		})
 	}
 }
+func TestFlatMap(t *testing.T) {
+	tests := []struct {
+		name  string
+		items []int
+		fn    func(int) []string
+		want  []string
+	}{
+		{
+			name:  "empty slice",
+			items: []int{},
+			fn:    func(i int) []string { return []string{fmt.Sprintf("Num: %d", i)} },
+			want:  []string{},
+		},
+		{
+			name:  "single item",
+			items: []int{1},
+			fn:    func(i int) []string { return []string{fmt.Sprintf("Num: %d", i)} },
+			want:  []string{"Num: 1"},
+		},
+		{
+			name:  "multiple items",
+			items: []int{1, 2, 3},
+			fn:    func(i int) []string { return []string{fmt.Sprintf("Num: %d", i), fmt.Sprintf("Square: %d", i*i)} },
+			want:  []string{"Num: 1", "Square: 1", "Num: 2", "Square: 4", "Num: 3", "Square: 9"},
+		},
+	}
 
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := grab.FlatMap(tt.items, tt.fn)
+			assert.ElementsMatch(t, tt.want, got)
+			if got != nil {
+				assert.Equal(t, tt.want, got)
+			}
+		})
+	}
+}
 func TestFilter(t *testing.T) {
 	tests := []struct {
 		name  string

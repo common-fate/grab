@@ -187,6 +187,35 @@ func Map[T any, F any](items []T, fn func(T) F) []F {
 	return result
 }
 
+// FlatMap applies a transformation function to each item in a slice and flattens the results into a single slice.
+// It is a generic function that operates on a slice of any type 'T' and applies a function that transforms each 'T' into a slice of 'F'.
+//
+// Parameters:
+//   - items: A slice of items of type 'T'. These are the items to be transformed.
+//   - fn: A function that takes an item of type 'T' and returns a slice of items of type 'F'. This function defines the transformation to be applied to each item.
+//
+// Returns:
+//   - []F: A slice containing all the transformed items, flattened into a single slice. The order of the items in this slice corresponds to the order of the items in the input slice, with each resulting slice concatenated in order.
+//
+// Example:
+// originalItems := []int{1, 2, 3}
+//
+//	transformedItems := FlatMap[int, string](originalItems, func(i int) []string {
+//	    return []string{fmt.Sprintf("Number: %d", i), fmt.Sprintf("Square: %d", i*i)}
+//	})
+//
+// // transformedItems will be a []string with values: ["Number: 1", "Square: 1", "Number: 2", "Square: 4", "Number: 3", "Square: 9"]
+//
+// Note: This function is useful for cases where a slice of items needs to be transformed or mapped into multiple items,
+// and the resulting slices need to be concatenated into a single slice. The provided 'fn' function encapsulates the logic of this transformation.
+func FlatMap[T any, F any](items []T, fn func(T) []F) []F {
+	var result []F
+	for _, item := range items {
+		result = append(result, fn(item)...)
+	}
+	return result
+}
+
 // Filter iterates over elements of a slice, returning a new slice of all elements for which the predicate `fn` returns true.
 //
 // Parameters:
