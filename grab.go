@@ -266,3 +266,43 @@ func MapFromSlice[T comparable, F any](items []T, value F) map[T]F {
 	}
 	return result
 }
+
+// ChunkSlice splits the given slice into smaller slices (chunks) of the specified size.
+//
+// Parameters:
+//   - slice: A slice of items of type 'T'. These are the items to be chunked.
+//   - chunkSize: The size of each chunk.
+//
+// Returns:
+//   - [][]T: A slice of slices, where each inner slice contains up to 'chunkSize' items from the original slice.
+//
+// Example:
+// originalSlice := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+//
+// chunks := ChunkSlice(originalSlice, 3)
+//
+// // chunks will be a slice of slices of ints with the following structure: [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+func ChunkSlice[T any](slice []T, chunkSize int) [][]T {
+	// prevent infinite loops by checking first for these exit conditions
+	if len(slice) == 0 {
+		return nil
+	}
+	if chunkSize == 0 {
+		return nil
+	}
+
+	var chunks [][]T
+	for i := 0; i < len(slice); i += chunkSize {
+		end := i + chunkSize
+
+		// necessary check to avoid slicing beyond
+		// slice capacity
+		if end > len(slice) {
+			end = len(slice)
+		}
+
+		chunks = append(chunks, slice[i:end])
+	}
+
+	return chunks
+}

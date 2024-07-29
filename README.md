@@ -146,7 +146,6 @@ This function is particularly useful for cases where a slice of items needs to b
 
 ```go
 import (
-    "fmt"
     "github.com/common-fate/grab"
 )
 
@@ -167,7 +166,6 @@ This function is useful when you need to extract elements from a collection base
 ```go
 Copy code
 import (
-"fmt"
 "github.com/common-fate/grab"
 )
 
@@ -178,5 +176,23 @@ fruitMap := grab.MapFromSlice(fruits, true)
 ```
 
 This function is particularly useful when you need to quickly create a mapping of elements from a slice, associating each element with a common value. It simplifies the process of generating maps from slices and can be handy in various scenarios where key-value associations are required.
+
+## grab.ChunkSlice
+
+`grab.ChunkSlice` creates a map from the given slice, where the elements of the slice become the keys and a provided value is associated with each key. It operates on a slice of any type T and returns a map with keys of type T and values of any type F.
+
+```go
+Copy code
+import (
+"github.com/common-fate/grab"
+)
+
+// Example usage of MapFromSlice
+fruits := []string{"apple", "banana", "orange"}
+fruitMap := grab.ChunkSlice(fruits, 2)
+// fruitMap will be a [][]string: {{"apple","banana"},{"orange"}}
+```
+
+This function is particularly useful when calling an API that has a limit on the number of elements per call.
 
 Created by @JoshuaWilkes.

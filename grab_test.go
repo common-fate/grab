@@ -323,3 +323,56 @@ func TestMapFromSlice(t *testing.T) {
 		})
 	}
 }
+
+func TestChunkSlice(t *testing.T) {
+	tests := []struct {
+		name      string
+		slice     []int
+		chunkSize int
+		expected  [][]int
+	}{
+		{
+			name:      "Chunk size divides slice evenly",
+			slice:     []int{1, 2, 3, 4, 5, 6, 7, 8, 9},
+			chunkSize: 3,
+			expected:  [][]int{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}},
+		},
+		{
+			name:      "Chunk size does not divide slice evenly",
+			slice:     []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+			chunkSize: 3,
+			expected:  [][]int{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10}},
+		},
+		{
+			name:      "Chunk size greater than slice length",
+			slice:     []int{1, 2, 3},
+			chunkSize: 5,
+			expected:  [][]int{{1, 2, 3}},
+		},
+		{
+			name:      "Chunk size is 1",
+			slice:     []int{1, 2, 3, 4},
+			chunkSize: 1,
+			expected:  [][]int{{1}, {2}, {3}, {4}},
+		},
+		{
+			name:      "Empty slice",
+			slice:     []int{},
+			chunkSize: 3,
+			expected:  nil,
+		},
+		{
+			name:      "Chunk size is 0",
+			slice:     []int{1, 2, 3},
+			chunkSize: 0,
+			expected:  nil,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := grab.ChunkSlice(tt.slice, tt.chunkSize)
+			assert.Equal(t, tt.expected, result)
+		})
+	}
+}
